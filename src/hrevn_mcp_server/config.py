@@ -10,7 +10,7 @@ class Settings:
     api_key: str = os.getenv("HREVN_API_KEY", "")
     request_timeout_seconds: int = int(os.getenv("HREVN_MCP_TIMEOUT_SECONDS", "30"))
     server_name: str = os.getenv("HREVN_MCP_SERVER_NAME", "hrevn-mcp-server")
-    server_version: str = os.getenv("HREVN_MCP_SERVER_VERSION", "0.1.0-alpha")
+    server_version: str = os.getenv("HREVN_MCP_SERVER_VERSION", "0.1.0a0")
 
     @property
     def normalized_api_base_url(self) -> str:

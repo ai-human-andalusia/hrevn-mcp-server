@@ -1,4 +1,5 @@
 # HREVN MCP Server
+<!-- mcp-name: io.github.ai-human-andalusia/hrevn-mcp-server -->
 
 Minimal MCP server for HREVN, backed by the live managed runtime at `https://api.hrevn.com`.
 

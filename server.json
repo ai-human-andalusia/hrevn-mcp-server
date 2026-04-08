@@ -1,71 +1,20 @@
 {
-  "name": "HREVN MCP Server",
-  "description": "Thin MCP server for HREVN baseline diagnostics, profile validation, evidence bundle generation, and bundle verification, backed by the live managed runtime at https://api.hrevn.com.",
-  "version": "0.1.0-alpha",
-  "homepage": "https://hrevn.com",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.ai-human-andalusia/hrevn-mcp-server",
+  "description": "HREVN trust layer for baseline diagnostics, profile validation, evidence bundle generation, and workflow integrity via the live managed runtime.",
   "repository": {
     "url": "https://github.com/ai-human-andalusia/hrevn-mcp-server",
     "source": "github"
   },
-  "license": "MIT",
-  "transport": {
-    "type": "stdio"
-  },
-  "command": {
-    "binary": "hrevn-mcp-server",
-    "installation": {
-      "type": "python",
-      "steps": [
-        "git clone https://github.com/ai-human-andalusia/hrevn-mcp-server",
-        "cd hrevn-mcp-server",
-        "pip install -e ."
-      ]
+  "version": "0.1.0a0",
+  "packages": [
+    {
+      "registry_type": "pypi",
+      "identifier": "hrevn-mcp-server",
+      "version": "0.1.0a0",
+      "transport": {
+        "type": "stdio"
+      }
     }
-  },
-  "environment": [
-    {
-      "name": "HREVN_API_BASE_URL",
-      "required": false,
-      "default": "https://api.hrevn.com",
-      "description": "Base URL for the live HREVN managed runtime."
-    },
-    {
-      "name": "HREVN_API_KEY",
-      "required": true,
-      "description": "API key for the HREVN managed runtime."
-    }
-  ],
-  "tools": [
-    {
-      "name": "baseline_check",
-      "description": "Run a HREVN baseline diagnostic before a consequential workflow step."
-    },
-    {
-      "name": "profile_validate",
-      "description": "Validate a HREVN profile payload more deeply once the workflow profile is known."
-    },
-    {
-      "name": "generate_bundle",
-      "description": "Generate a tamper-evident HREVN evidence bundle from a record and traces."
-    },
-    {
-      "name": "verify_bundle",
-      "description": "Verify a HREVN evidence bundle by source path or bundle artifact path."
-    }
-  ],
-  "hostExamples": [
-    {
-      "host": "Claude Code",
-      "docs": "docs/CLAUDE_CODE_MCP_CONFIG.md"
-    }
-  ],
-  "tags": [
-    "mcp",
-    "anthropic",
-    "claude-code",
-    "agentic-ai",
-    "traceability",
-    "auditability",
-    "workflow-integrity"
   ]
 }
