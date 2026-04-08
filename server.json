@@ -1,7 +1,7 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
   "name": "io.github.ai-human-andalusia/hrevn-mcp-server",
-  "description": "HREVN trust layer for baseline diagnostics, profile validation, evidence bundle generation, and workflow integrity via the live managed runtime.",
+  "description": "HREVN trust layer for baseline diagnostics and verifiable workflow integrity for AI agents.",
   "repository": {
     "url": "https://github.com/ai-human-andalusia/hrevn-mcp-server",
     "source": "github"
@@ -9,7 +9,7 @@
   "version": "0.1.0a0",
   "packages": [
     {
-      "registry_type": "pypi",
+      "registryType": "pypi",
       "identifier": "hrevn-mcp-server",
       "version": "0.1.0a0",
       "transport": {
