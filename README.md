@@ -66,6 +66,7 @@ and place that path in your Claude Code MCP config instead of the bare command.
 See:
 - `docs/CLAUDE_CODE_MCP_CONFIG.md`
 - `examples/baseline_check_payload.json`
+- `server.json`
 
 ## Recommended first test
 
@@ -81,6 +82,14 @@ That should return a real `BaselineResult` from the live HREVN managed API.
 
 This server must not reimplement HREVN truth locally.
 It should only expose stable MCP tools that call the managed API.
+
+## Registry readiness
+
+This repo includes:
+- `server.json`
+
+as a machine-readable manifest describing the server, transport, environment,
+and exposed tools for registry and catalog use.
 
 ## Current status
 
