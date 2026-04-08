@@ -38,6 +38,16 @@ hrevn-mcp-server
 
 The server uses MCP `stdio` transport.
 
+## Verify before opening Claude Code
+
+```bash
+hrevn-mcp-server --version
+hrevn-mcp-server --list-tools
+hrevn-mcp-server --self-test
+```
+
+The self-test runs a live `baseline_check` against the configured HREVN managed API.
+
 ## Claude Code MCP example
 
 See:

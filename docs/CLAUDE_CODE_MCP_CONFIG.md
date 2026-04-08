@@ -1,6 +1,12 @@
 # Claude Code MCP Config
 
-Example local MCP configuration for Claude Code:
+Example local MCP configuration for Claude Code.
+
+Depending on how Claude Code is installed, put this JSON in one of:
+- `~/.claude.json` for a user-level setup
+- `.claude/settings.json` for a project-level setup
+
+Use the one your Claude Code installation already expects.
 
 ```json
 {
@@ -14,6 +20,17 @@ Example local MCP configuration for Claude Code:
     }
   }
 }
+```
+
+## Verify the server first
+
+Before opening Claude Code, verify that the MCP server is installed and can
+reach the live backend:
+
+```bash
+hrevn-mcp-server --version
+hrevn-mcp-server --list-tools
+hrevn-mcp-server --self-test
 ```
 
 ## Expected tool path

@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from typing import Any
 
 from .config import settings
+from .tools import TOOL_SPECS
 from .tools import ToolRegistry
 
 
@@ -115,7 +117,50 @@ class McpServer:
         sys.stdout.buffer.flush()
 
 
-def main() -> None:
+def _run_self_test() -> int:
+    payload = {
+        "task_type": "ai_workflow",
+        "profile": "eu_readiness_profile",
+        "record": {
+            "agent_name": "claude_code",
+            "summary": "MCP self-test",
+        },
+    }
+    result = ToolRegistry().call_tool("baseline_check", payload)
+    print(json.dumps(result, indent=2))
+    return 0 if not result.get("isError") else 1
+
+
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(description="HREVN MCP server")
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print the MCP server version and exit.",
+    )
+    parser.add_argument(
+        "--self-test",
+        action="store_true",
+        help="Run a live baseline_check against the configured HREVN managed API and exit.",
+    )
+    parser.add_argument(
+        "--list-tools",
+        action="store_true",
+        help="Print the MCP tool names and exit.",
+    )
+    args = parser.parse_args(argv)
+
+    if args.version:
+        print(settings.server_version)
+        return
+
+    if args.list_tools:
+        print("\n".join(spec.name for spec in TOOL_SPECS))
+        return
+
+    if args.self_test:
+        raise SystemExit(_run_self_test())
+
     McpServer().run()
 
 
