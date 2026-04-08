@@ -1,0 +1,8 @@
+{
+  "task_type": "ai_workflow",
+  "profile": "eu_readiness_profile",
+  "record": {
+    "agent_name": "claude_code",
+    "summary": "MCP baseline smoke test"
+  }
+}

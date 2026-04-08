@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hrevn-mcp-server"
+version = "0.1.0-alpha"
+description = "Minimal MCP server for HREVN tools backed by the live managed API."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  { name = "HREVN", email = "contact@hrevn.com" }
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent"
+]
+
+[project.scripts]
+hrevn-mcp-server = "hrevn_mcp_server.server:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
