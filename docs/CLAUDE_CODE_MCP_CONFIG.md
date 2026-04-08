@@ -8,6 +8,11 @@ Depending on how Claude Code is installed, put this JSON in one of:
 
 Use the one your Claude Code installation already expects.
 
+Important:
+- if you installed `hrevn-mcp-server` into a virtualenv, launch Claude Code from
+  that same activated environment
+- otherwise the command may not be present in the `PATH` Claude Code sees
+
 ```json
 {
   "mcpServers": {
@@ -31,6 +36,28 @@ reach the live backend:
 hrevn-mcp-server --version
 hrevn-mcp-server --list-tools
 hrevn-mcp-server --self-test
+```
+
+If the command is not found, get the absolute path:
+
+```bash
+which hrevn-mcp-server
+```
+
+and use that full path in the MCP config, for example:
+
+```json
+{
+  "mcpServers": {
+    "hrevn": {
+      "command": "/absolute/path/to/hrevn-mcp-server",
+      "env": {
+        "HREVN_API_BASE_URL": "https://api.hrevn.com",
+        "HREVN_API_KEY": "replace-me"
+      }
+    }
+  }
+}
 ```
 
 ## Expected tool path

@@ -30,6 +30,10 @@ cd hrevn-mcp-server
 pip install -e .
 ```
 
+If you install into a virtual environment, make sure the same virtual
+environment is active when you launch Claude Code. Otherwise `hrevn-mcp-server`
+may not be on the `PATH` Claude Code uses.
+
 ## Run
 
 ```bash
@@ -47,6 +51,15 @@ hrevn-mcp-server --self-test
 ```
 
 The self-test runs a live `baseline_check` against the configured HREVN managed API.
+
+If `hrevn-mcp-server` is not found, use the absolute executable path from the
+active environment, for example:
+
+```bash
+which hrevn-mcp-server
+```
+
+and place that path in your Claude Code MCP config instead of the bare command.
 
 ## Claude Code MCP example
 
