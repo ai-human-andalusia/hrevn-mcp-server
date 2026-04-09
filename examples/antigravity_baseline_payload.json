@@ -1,0 +1,12 @@
+{
+  "task_type": "ai_workflow",
+  "profile": "eu_readiness_profile",
+  "record": {
+    "agent_name": "antigravity",
+    "summary": "MCP baseline smoke test for a consequential coding task"
+  },
+  "metadata": {
+    "surface": "google_antigravity",
+    "stage": "pre_completion"
+  }
+}
