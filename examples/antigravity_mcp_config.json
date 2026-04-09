@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "hrevn": {
+      "command": "python3",
+      "args": [
+        "-m",
+        "hrevn_mcp_server.server"
+      ],
+      "env": {
+        "PYTHONPATH": "/ABSOLUTE/PATH/TO/hrevn-mcp-server/src",
+        "HREVN_API_BASE_URL": "https://api.hrevn.com",
+        "HREVN_API_KEY": "YOUR_HREVN_API_KEY"
+      }
+    }
+  }
+}
