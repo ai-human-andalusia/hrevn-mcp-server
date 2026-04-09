@@ -1,14 +1,18 @@
 # HREVN MCP Server
 <!-- mcp-name: io.github.ai-human-andalusia/hrevn-mcp-server -->
 
-Minimal MCP server for HREVN, backed by the live managed runtime at `https://api.hrevn.com`.
+Minimal stdio MCP server for HREVN, backed by the live managed runtime at
+`https://api.hrevn.com`.
 
 ## Why this exists
 
-For Anthropic and later Codex, MCP is the cleanest way to expose HREVN as real tools rather than only as local helper scripts. This server stays thin on purpose:
-- canonical semantics remain in the private HREVN core
-- execution remains in the live HREVN managed runtime
-- the MCP layer only exposes HREVN capabilities in a standard tool interface
+This repo exposes HREVN as real MCP tools instead of ad hoc helper scripts.
+It stays intentionally thin:
+
+- canonical semantics remain in the HREVN managed runtime
+- the MCP layer only exposes stable tool contracts
+- consequential results come back as structured output, including
+  `risk_flags`, `remedy_payload`, and `check_id`
 
 ## Included tools
 
@@ -21,19 +25,35 @@ For Anthropic and later Codex, MCP is the cleanest way to expose HREVN as real t
 
 ```bash
 export HREVN_API_BASE_URL="https://api.hrevn.com"
-export HREVN_API_KEY="replace-me"
+export HREVN_API_KEY="replace-with-issued-alpha-key"
 ```
+
+Optional environment variables:
+
+- `HREVN_MCP_TIMEOUT_SECONDS`
+- `HREVN_MCP_SERVER_NAME`
+- `HREVN_MCP_SERVER_VERSION`
 
 ## Install
 
+### Editable install
+
 ```bash
 cd hrevn-mcp-server
-pip install -e .
+python3 -m pip install -e .
 ```
 
-If you install into a virtual environment, make sure the same virtual
-environment is active when you launch Claude Code. Otherwise `hrevn-mcp-server`
-may not be on the `PATH` Claude Code uses.
+### From PyPI
+
+```bash
+python3 -m pip install hrevn-mcp-server
+```
+
+The console entry point is:
+
+```bash
+hrevn-mcp-server
+```
 
 ## Run
 
@@ -43,7 +63,7 @@ hrevn-mcp-server
 
 The server uses MCP `stdio` transport.
 
-## Verify before opening Claude Code
+## Verify before using a client
 
 ```bash
 hrevn-mcp-server --version
@@ -51,48 +71,131 @@ hrevn-mcp-server --list-tools
 hrevn-mcp-server --self-test
 ```
 
-The self-test runs a live `baseline_check` against the configured HREVN managed API.
-
-If `hrevn-mcp-server` is not found, use the absolute executable path from the
-active environment, for example:
+If you are running directly from source without an installed entry point:
 
 ```bash
-which hrevn-mcp-server
+PYTHONPATH=src python3 -m hrevn_mcp_server.server --list-tools
+PYTHONPATH=src python3 -m hrevn_mcp_server.server --self-test
 ```
 
-and place that path in your Claude Code MCP config instead of the bare command.
+The self-test runs a live `baseline_check` against the configured HREVN
+managed API.
 
-## Claude Code MCP example
+## Tool contracts
 
-See:
-- `docs/CLAUDE_CODE_MCP_CONFIG.md`
-- `examples/baseline_check_payload.json`
-- `server.json`
+### `baseline_check`
 
-## Recommended first test
+Minimal payload:
 
-Once Claude Code has this MCP server configured, ask it to call:
-- `baseline_check`
+```json
+{
+  "task_type": "ai_workflow",
+  "profile": "eu_readiness_profile",
+  "record": {
+    "agent_name": "example_agent",
+    "summary": "baseline smoke test"
+  },
+  "metadata": {
+    "surface": "mcp",
+    "stage": "pre_completion"
+  }
+}
+```
 
-with the payload in:
-- `examples/baseline_check_payload.json`
+### `profile_validate`
 
-That should return a real `BaselineResult` from the live HREVN managed API.
+Minimal payload:
+
+```json
+{
+  "profile": "eu_readiness_profile",
+  "record": {},
+  "metadata": {}
+}
+```
+
+### `generate_bundle`
+
+Minimal payload:
+
+```json
+{
+  "record": {},
+  "traces": [],
+  "options": {
+    "include_report_pdf": false
+  }
+}
+```
+
+### `verify_bundle`
+
+Minimal payload:
+
+```json
+{
+  "source": "/path/to/bundle-or-artifact"
+}
+```
+
+## Example MCP config
+
+Use a local stdio configuration like this:
+
+```json
+{
+  "mcpServers": {
+    "hrevn": {
+      "command": "python3",
+      "args": [
+        "-m",
+        "hrevn_mcp_server.server"
+      ],
+      "env": {
+        "PYTHONPATH": "/ABSOLUTE/PATH/TO/hrevn-mcp-server/src",
+        "HREVN_API_BASE_URL": "https://api.hrevn.com",
+        "HREVN_API_KEY": "YOUR_HREVN_API_KEY"
+      }
+    }
+  }
+}
+```
+
+See also:
+
+- [Antigravity setup guide](./docs/ANTIGRAVITY_SETUP.md)
+- [Conservative experiment guide](./docs/ANTIGRAVITY_MCP_EXPERIMENT.md)
+- [Antigravity MCP config example](./examples/antigravity_mcp_config.json)
+- [Antigravity baseline payload](./examples/antigravity_baseline_payload.json)
+
+## Antigravity status
+
+HREVN can already be explored experimentally in Google Antigravity through
+custom MCP configuration.
+
+What is already validated:
+
+- the HREVN MCP server runs locally
+- the server exposes real tools backed by `https://api.hrevn.com`
+- `baseline_check` returns real structured results
+- Antigravity preview builds expose MCP configuration surfaces in the UI
+
+What is not claimed yet:
+
+- official native Antigravity integration
+- guaranteed MCP tool injection into every Antigravity agent instance
+- Antigravity-specific guardrail hooks beyond what has been directly observed
+
+## Registry metadata
+
+This repo includes:
+
+- [server.json](./server.json)
+
+as a machine-readable manifest describing the MCP server, package, transport,
+and repository metadata.
 
 ## Design rule
 
 This server must not reimplement HREVN truth locally.
-It should only expose stable MCP tools that call the managed API.
-
-## Registry readiness
-
-This repo includes:
-- `server.json`
-
-as a machine-readable manifest describing the server, transport, environment,
-and exposed tools for registry and catalog use.
-
-## Current status
-
-This is a minimal first MCP server aimed at Anthropic-first testing.
-It is intentionally thin, real, and compatible with the live managed API path already in production.
+It should expose stable MCP tools that call the managed API.
